@@ -40,19 +40,6 @@ const SignIn = () => {
 
   }
 
-  // const onClickfuntion = async () => {
-  //   try {
-  //     const res = await fetch("http://localhost:10000/api/v1/user/signout", {
-  //       method: "GET",
-  //     });
-  //     const resData = await res.json();
-
-  //     console.log(resData);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // }
-
   return (
     <div className=' Signpage'>
       <div className=' border-b-2 border-slate-400 flex justify-between pl-8 pt-6 pr-12'>
