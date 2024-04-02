@@ -1,8 +1,9 @@
 const express = require("express");
 const mongoose =  require("mongoose");
 const dotenv = require("dotenv");
+let cookieParser = require("cookie-parser");
 
-const cors = require("cors")
+const cors = require("cors");
 
 const userRouter = require("./Router/user");
 
@@ -14,6 +15,7 @@ app.use(cors({
     origin:"*",
 }));
 
+app.use(cookieParser());
 
 app.use(express.json());
 

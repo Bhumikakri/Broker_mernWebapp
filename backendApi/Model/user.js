@@ -51,7 +51,7 @@ const userSchema = new mongoose.Schema(
     wishlist: {
       type: [mongoose.Schema.Types.ObjectId],
       default: [],
-      ref: "cars",
+      ref: "houses",
     },
     address: {
       type: addressSchema,

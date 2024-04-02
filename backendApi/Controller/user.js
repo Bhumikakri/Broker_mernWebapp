@@ -13,9 +13,10 @@ const register = async (req, res) => {
       success: true,
       message: "user created Successfully",
     });
+
   } catch (error) {
     res.status(400).json({
-      success: false,
+      status: false,
       message: "something went wrong try again later",
     });
   }
@@ -27,7 +28,7 @@ const login = async (req, res) => {
 
     if (!user) {
       return res.json({
-        seccess: false,
+        status: false,
         message: "Invalid username",
       });
     }
@@ -39,7 +40,7 @@ const login = async (req, res) => {
 
     if (!isCorrectPasword) {
       return res.json({
-        seccess: false,
+        status: false,
         message: "Invalid password",
       });
     }
@@ -55,37 +56,50 @@ const login = async (req, res) => {
 
     const token = jwt.sign(payload, process.env.JWT_TOKEN);
 
+    const loginUser = await usermodel.findById(user._id).select('-password');
+
     res.cookie("access_token", token, { httpOnly: true }).json({
-      status: true,
+      success: true,
       message: "login successfully",
+      userDetails:loginUser,
       token,
     });
   } catch (error) {
     res.status(404).json({
-      success: false,
+      status: false,
       message: error.message,
     });
   }
 };
 
 const google = (req, res) => {
-
-    res.json({
-        status: true,
-        message: "this is demo google api"
-    })
-}
+  res.json({
+    success: true,
+    message: "this is demo google api",
+  });
+};
 
 const signOut = (req, res) => {
+  // console.log(req);
+  try {
+    res.cookie('access_token', '', { expires: new Date(0) });
     res.json({
-        status: true,
-        message: " logout successfull "
-    })
-}
+      success: true,
+      message: " logout successfull ",
+    });
+  } catch (error) {
+    next(error);
+  }
+};
 
 module.exports = {
   register,
   login,
   google,
   signOut,
+
+  //crud
+  //updateuser,
+  //deleteUser,
+  //viewAlluser
 };

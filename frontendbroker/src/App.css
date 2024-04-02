@@ -1,5 +1,39 @@
 .App{
   max-width: 100vw;
-  min-height:100vh ;
-  background-color: rgba(12, 11, 11, 0.74);
+  min-height: 100vh;
 }
+.mainpage {
+  width: 100%;
+  height: 100%;
+  background-image: url("../src/assets/home_img1.jpg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
+}
+.Homepage {
+  background-color: rgba(0, 0, 0, 0.267);
+}
+.header {
+  background-color: rgba(0, 0, 0, 0.267);
+}
+.header.scrolled {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 100000;
+  background-color: rgb(2, 4, 37);
+  border-bottom: 1px solid rgb(124, 122, 122);
+}
+.Signpage{
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  background-image: url("./assets/signpage.webp");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
+  
+}
+
