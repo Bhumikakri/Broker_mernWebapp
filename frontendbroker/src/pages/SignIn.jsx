@@ -2,13 +2,16 @@ import React, { useState } from 'react';
 import logo from '../assets/logo.png.webp';
 import { Form, Link, useNavigate } from "react-router-dom";
 import Cookies from 'js-cookie';
+import { useDispatch } from 'react-redux';
+import { signInSuccess } from '../Redux/user/userSlice';
 
 const SignIn = () => {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+  const dispatch = useDispatch()
 
 
   const loginCheck = async (e) => {
@@ -28,7 +31,7 @@ const SignIn = () => {
       const resData = await res.json();
       if (resData.token) {
         console.log(resData);
-        // localStorage.setItem('response',resData.userDetails);
+        dispatch(signInSuccess(resData))
         Cookies.set('access_token', resData.token)
         navigate("/")
       }
@@ -38,6 +41,14 @@ const SignIn = () => {
       console.log(error);
     }
 
+  }
+
+  const GoogleClickhandle = async ( ) => {
+    try {
+      
+    } catch (error) {
+      console.log("not login", error);
+    }
   }
 
   return (
@@ -62,7 +73,7 @@ const SignIn = () => {
             <button type='submit' onClick={loginCheck} className=' hover:bg-transparent border-slate-700 hover:border-2 hover:text-slate-700 rounded-md ml-24 bg-gray-900 text-white mt-4 w-1/2 h-10' >Submit</button>
             <Link to="/signUp" className=' text-center text-base hover:text-green-700'>Register now</Link>
             or,
-            <button className=' bg-red-400 p-3 rounded-md'>Login with Google</button>
+            <button onClick={GoogleClickhandle} className=' bg-red-400 p-3 rounded-md'>Login with Google</button>
           </Form>
         </div>
       </div>

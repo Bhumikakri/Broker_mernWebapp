@@ -38,7 +38,10 @@ const Header = () => {
       });
       const resData = await res.json();
       Cookies.remove('access_token');
-      navigate("/signin")
+      
+      navigate("/signin");
+      localStorage.clear();
+      window.location.reload();
 
       console.log(resData);
     } catch (error) {
