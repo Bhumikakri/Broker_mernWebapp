@@ -13,7 +13,6 @@ const register = async (req, res) => {
       success: true,
       message: "user created Successfully",
     });
-
   } catch (error) {
     res.status(400).json({
       status: false,
@@ -39,7 +38,7 @@ const login = async (req, res) => {
     );
 
     if (!isCorrectPasword) {
-      return res.json({
+      return res.cookie("access_token", "", { expires: new Date(0) }).json({
         status: false,
         message: "Invalid password",
       });
@@ -49,19 +48,18 @@ const login = async (req, res) => {
 
     const payload = {
       id: user._id,
-      name: user.username,
       role: user.role,
       exp: expiryDate,
     };
 
     const token = jwt.sign(payload, process.env.JWT_TOKEN);
 
-    const loginUser = await usermodel.findById(user._id).select('-password');
+    const loginUser = await usermodel.findById(user._id).select("-password");
 
     res.cookie("access_token", token, { httpOnly: true }).json({
       success: true,
       message: "login successfully",
-      userDetails:loginUser,
+      userDetails: loginUser,
       token,
     });
   } catch (error) {
@@ -72,6 +70,7 @@ const login = async (req, res) => {
   }
 };
 
+// not do this
 const google = (req, res) => {
   res.json({
     success: true,
@@ -82,24 +81,110 @@ const google = (req, res) => {
 const signOut = (req, res) => {
   // console.log(req);
   try {
-    res.cookie('access_token', '', { expires: new Date(0) });
+    res.cookie("access_token", "", { expires: new Date(0) });
     res.json({
       success: true,
       message: " logout successfull ",
     });
   } catch (error) {
-    next(error);
+    console.log(error);
+    res.status(404).json({
+      status: false,
+      message: error.message,
+    });
+  }
+};
+
+// complete
+const updateUser = async (req, res) => {
+ console.log(req.user);
+  try {
+    const updatedpassword = req.body.password;
+    // console.log("1", updatedpassword);
+    // console.log("2", req.user.password);
+    if (updatedpassword === " ") {
+      // console.log("3", updatedpassword);
+      updatedpassword = req.user.password;
+
+      await usermodel.findByIdAndUpdate(req.user._id, {
+        $set: {
+          ...req.body,
+          password: updatedpassword,
+        },
+      });
+    } else {
+      const salt = bcrypt.genSaltSync(10);
+      const hash = bcrypt.hashSync(updatedpassword, salt);
+      await usermodel.findByIdAndUpdate(req.user._id, {
+        $set: {
+          ...req.body,
+          password: hash,
+        },
+      });
+    }
+
+    const updatedUser = await usermodel.findById(req.user._id).select("-password");
+
+    res.json({
+      success: true,
+      message: "updated succesfully",
+      userDetails: updatedUser,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(404).json({
+      status: false,
+      message: error.message,
+    });
+  }
+};
+
+const deleteUser = async (req, res) => {
+  // console.log(req.user._id);
+  try {
+    const deletedUser = await usermodel.findByIdAndDelete(req.user._id);
+
+    if (!deletedUser) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    res.json({
+      success: true,
+      message: "User Deleted Successfully",
+    });
+    
+  } catch (error) {
+    res.status(404).json({
+      success: false,
+      message: "something went wrong try again later",
+    });
+  }
+};
+
+const getUser = (req, res) => {
+  // console.log(req);
+  try {
+    res.json({
+      success: true,
+      message: "updated succesfully",
+    });
+  } catch (error) {
+    res.status(404).json({
+      status: false,
+      message: error.message,
+    });
   }
 };
 
 module.exports = {
-  register,
-  login,
+  register, //complete
+  login, //complete
   google,
-  signOut,
-
-  //crud
-  //updateuser,
-  //deleteUser,
-  //viewAlluser
+  signOut, //complete
+  updateUser, //complete
+  deleteUser, //complete
+  getUser,
 };

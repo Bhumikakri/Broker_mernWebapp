@@ -4,6 +4,8 @@ import { Form, Link, useNavigate } from "react-router-dom";
 import Cookies from 'js-cookie';
 import { useDispatch } from 'react-redux';
 import { signInSuccess } from '../Redux/user/userSlice';
+import { ToastContainer, toast } from 'react-toastify';
+import "react-toastify/dist/ReactToastify.css";
 
 const SignIn = () => {
 
@@ -29,23 +31,29 @@ const SignIn = () => {
         body: JSON.stringify(option),
       });
       const resData = await res.json();
+      
       if (resData.token) {
         console.log(resData);
         dispatch(signInSuccess(resData))
         Cookies.set('access_token', resData.token)
         navigate("/")
       }
-
-      console.log("token not available");
+      else {
+        toast.warning("wrong user id and password", {
+          position: "top-right",
+          className: 'foo-bar'
+        });
+        console.log("token not available")
+      }
     } catch (error) {
       console.log(error);
     }
 
   }
 
-  const GoogleClickhandle = async ( ) => {
+  const GoogleClickhandle = async () => {
     try {
-      
+
     } catch (error) {
       console.log("not login", error);
     }
@@ -77,6 +85,7 @@ const SignIn = () => {
           </Form>
         </div>
       </div>
+      <ToastContainer theme="light" />
     </div>
   )
 }

@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import logo from '../assets/logo.png.webp';
 import { FaBars } from "react-icons/fa";
-import { Link, useNavigate } from 'react-router-dom';
-import Cookies from 'js-cookie';
+import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 
 const Header = () => {
-  const navigate = useNavigate();
+  const { user } = useSelector(state => state.users)
+  // console.log(user);
+
   const [isScrolled, setIsScrolled] = useState();
   const [iconClick, setIconClick] = useState(false);
 
@@ -25,33 +27,14 @@ const Header = () => {
       window.removeEventListener('scroll', handleScroll);
     };
 
-  }, [])
+  }, []);
 
   const showOptions = () => {
     setIconClick((prev) => !prev);
   }
 
-  const onClickfuntion = async () => {
-    try {
-      const res = await fetch("http://localhost:10000/api/v1/user/signout", {
-        method: "GET",
-      });
-      const resData = await res.json();
-      Cookies.remove('access_token');
-      
-      navigate("/signin");
-      localStorage.clear();
-      window.location.reload();
-
-      console.log(resData);
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
-
   return (
-    <div className={`px-9 py-2 w-full flex justify-between header ${isScrolled ? 'scrolled' : ''}`}>
+    <div className={`px-9 py-2 w-full flex justify-between items-center header ${isScrolled ? 'scrolled' : ''}`}>
       <div className=' w-fit'>
         <Link to='/'>
           <div>
@@ -60,33 +43,32 @@ const Header = () => {
           </div>
         </Link>
       </div>
-      <div className=' text-base font-semibold mt-6 hidden lg:flex gap-10 text-white'>
-        <Link to="/">Home</Link>
+      <div className=' text-base font-semibold hidden lg:flex gap-10 text-white'>
+        <Link to="/">HOME</Link>
         <Link to="/about">ABOUT US</Link>
         <Link to="/listing">LISTINGS</Link>
         <Link to='/contact'>CONTACT</Link>
       </div>
-      <div className=' text-base font-semibold mt-6 hidden lg:flex gap-11 text-white'>
+      <div className=' text-base font-semibold  hidden lg:flex items-center gap-11 text-white'>
         <Link to="/Profile">
-          <img src='' />
+          <img className=' w-9 rounded-full h-9 object-cover' src={user.userDetails.avatar} />
         </Link>
-
-        <button onClick={onClickfuntion}>singOut</button>
       </div>
       <div className=' w-fit h-fit mt-6 lg:hidden'>
         <i onClick={showOptions} className=' text-white text-3xl'><FaBars /></i>
       </div>
       {
         iconClick ? <div className=' lg:hidden flex gap-3 flex-col absolute top-24 left-0 bg-white w-full h-fit text-black'>
-          <Link to="/">Home</Link>
+          <Link to="/">HOME</Link>
           <Link to="/about">ABOUT US</Link>
           <Link to="/listing">LISTINGS</Link>
           <Link to='/contact'>CONTACT</Link>
+          <Link to='/profile'>PROFILE</Link>
         </div> : ''
       }
 
     </div>
-  )
+  );
 }
 
 export default Header

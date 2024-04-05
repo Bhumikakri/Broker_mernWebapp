@@ -24,7 +24,7 @@ function App() {
           element: <About />
         },
         {
-          path: "/Profile",
+          path: "/profile",
           element: <Profile />
         },
         {
