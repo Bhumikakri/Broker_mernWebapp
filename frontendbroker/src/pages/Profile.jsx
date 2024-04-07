@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Form, useNavigate } from 'react-router-dom';
+import { Form, Link, useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import { ToastContainer, toast } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
@@ -128,7 +128,10 @@ const Profile = () => {
               <input className=' bg-slate-200 p-2 rounded-md' value={password} onChange={(e) => setPassword(e.target.value)} type='password' placeholder='password' />
               <button onClick={updateProfile} className=' bg-slate-800 text-2xl text-white p-2 rounded-md' type='submit'>UPDATE</button>
             </Form>
-          </div> : ''
+          </div> : <div className=' mt-28 flex gap-8 flex-col'>
+            <Link className=' bg-slate-500 p-3  rounded-md text-2xl' to='/createproperty' >Create Property</Link>
+            <Link className=' bg-slate-500 p-3  rounded-md text-2xl' to='/createproperty' >update Property</Link>
+          </div>
           }
 
         </div>

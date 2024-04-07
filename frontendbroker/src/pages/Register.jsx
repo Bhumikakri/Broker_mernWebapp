@@ -54,13 +54,14 @@ const Register = () => {
 
     return (
         <div className='Signpage p-4 '>
-            <div>
+            <div className='  items-center flex gap-10 justify-between pl-8 pt-6 pr-12'>
                 <Link to='/'>
                     <div>
                         <img src={logo} className=' text-sm' />
                         <span className=' text-xl font-semibold text-white'>THE ESTATE</span>
                     </div>
                 </Link>
+                <h1 className=' text-2xl truncate font-bold text-white'>Buy and Sell your property very easily</h1>
             </div>
 
             <div>

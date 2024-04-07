@@ -3,10 +3,13 @@ import Main from './Component/Main';
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Home from './pages/Home';
 import About from './pages/About';
-import Listing from './pages/Listing';
 import SignIn from './pages/SignIn';
 import Register from './pages/Register';
 import Profile from './pages/Profile';
+import Properties from './pages/Properties';
+import Listing from './pages/Listing';
+import Searching from './pages/Searching';
+import Contact from './Component/Contact';
 
 function App() {
 
@@ -28,9 +31,21 @@ function App() {
           element: <Profile />
         },
         {
+          path: "/createproperty",
+          element: <Properties />
+        },
+        {
           path: "/listing",
           element: <Listing />
         },
+        {
+          path: "/search",
+          element:<Searching />
+        },
+        {
+          path: "/contact",
+          element:<Contact />
+        }
       ]
     },
     {
