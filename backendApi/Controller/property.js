@@ -122,6 +122,7 @@ const getsearchProperties = async (req, res) => {
     // Sorting parameters initialization
     const sort = req.query.sort || "createdAt";
     const order = req.query.order || "desc";
+    
 
     // Query building
     const filterproperty = await propertymodel
